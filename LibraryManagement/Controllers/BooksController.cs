@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Context;
+﻿using LibraryManagement.Business;
+using LibraryManagement.Context;
 using LibraryManagement.ExceptionHandling;
 using LibraryManagement.Models;
 using Microsoft.AspNetCore.Http;
@@ -13,107 +14,70 @@ namespace LibraryManagement.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IConnectionMultiplexer _redis;
+        private readonly IBookService _bookService;
 
-        public BooksController(ApplicationDbContext context, IConnectionMultiplexer redis)
+        public BooksController(IBookService bookService)
         {
-            _context = context;
-            _redis = redis;
+            _bookService = bookService;
         }
 
         // GET: /getAll
         [HttpGet("/getAll")]
         public async Task<ActionResult<ServiceResult<IEnumerable<Book>>>> GetAllBooks()
         {
-            var cache = _redis.GetDatabase();
-            var cachedBooks = await cache.StringGetAsync("books");
-
-            IEnumerable<Book> books;
-            if (!string.IsNullOrEmpty(cachedBooks))
+            var result = await _bookService.GetAllBooksAsync();
+            if (result.Status == ServiceResultStatus.Error && result.ProblemDetails != null)
             {
-                books = JsonConvert.DeserializeObject<IEnumerable<Book>>(cachedBooks) ?? new List<Book>();
+                return StatusCode(result.ProblemDetails.Status, result.ProblemDetails);
             }
-            else
-            {
-                books = await _context.Books.ToListAsync();
-                if (books == null)
-                {
-                    return NotFound(ServiceResult<IEnumerable<Book>>.Fail("Books not found"));
-                }
-
-                var serializedBooks = JsonConvert.SerializeObject(books);
-                await cache.StringSetAsync("books", serializedBooks);
-            }
-
-            return Ok(ServiceResult<IEnumerable<Book>>.Success(books));
+            return Ok(result);
         }
-
 
         // GET: getById/{id}
         [HttpGet("/getById/{id}")]
         public async Task<ActionResult<ServiceResult<Book>>> GetBookById(int id)
         {
-            var book = await _context.Books.FindAsync(id);
-            if (book == null)
+            var result = await _bookService.GetBookByIdAsync(id);
+            if (result.Status == ServiceResultStatus.Error && result.ProblemDetails != null)
             {
-                return NotFound(ServiceResult<Book>.Fail("Books not found"));
+                return StatusCode(result.ProblemDetails.Status, result.ProblemDetails);
             }
-            return Ok(ServiceResult<Book>.Success(book));
+            return Ok(result);
         }
 
         // POST: /create
         [HttpPost("/create")]
         public async Task<ActionResult<ServiceResult<Book>>> AddBook([FromBody] Book newBook)
         {
-            _context.Books.Add(newBook);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetBookById), new { id = newBook.Id }, ServiceResult<Book>.Success(newBook));
+            var result = await _bookService.AddBookAsync(newBook);
+            if (result.Status == ServiceResultStatus.Error && result.ProblemDetails != null)
+            {
+                return StatusCode(result.ProblemDetails.Status, result.ProblemDetails);
+            }
+            return CreatedAtAction(nameof(GetBookById), new { id = newBook.Id }, result);
         }
 
         // PUT: update/{id}
         [HttpPut("/update/{id}")]
         public async Task<IActionResult> UpdateBook(int id, [FromBody] Book updatedBook)
         {
-            if (id != updatedBook.Id)
+            var result = await _bookService.UpdateBookAsync(id, updatedBook);
+            if (result.Status == ServiceResultStatus.Error && result.ProblemDetails != null)
             {
-                return BadRequest(ServiceResult<Book>.Fail("ID uyuşmuyor"));
+                return StatusCode(result.ProblemDetails.Status, result.ProblemDetails);
             }
-
-            _context.Entry(updatedBook).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!_context.Books.Any(b => b.Id == id))
-                {
-                    return NotFound(ServiceResult<Book>.Fail("Books not found"));
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
             return NoContent();
         }
 
-        // DELETE: /delete/{id}
+        // DELETE: /delete/{id}]
         [HttpDelete("/delete/{id}")]
         public async Task<IActionResult> DeleteBook(int id)
         {
-            var book = await _context.Books.FindAsync(id);
-            if (book == null)
+            var result = await _bookService.DeleteBookAsync(id);
+            if (result.Status == ServiceResultStatus.Error && result.ProblemDetails != null)
             {
-                return NotFound(ServiceResult<Book>.Fail("Books not found"));
+                return StatusCode(result.ProblemDetails.Status, result.ProblemDetails);
             }
-
-            _context.Books.Remove(book);
-            await _context.SaveChangesAsync();
-
             return NoContent();
         }
 
@@ -121,22 +85,12 @@ namespace LibraryManagement.Controllers
         [HttpGet("paged")]
         public async Task<ActionResult<ServiceResult<object>>> GetPagedBooks([FromHeader] int pageNumber, [FromHeader] int pageSize)
         {
-            var totalRecords = await _context.Books.CountAsync();
-            var pagedBooks = await _context.Books
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-
-            var response = new
+            var result = await _bookService.GetPagedBooksAsync(pageNumber, pageSize);
+            if (result.Status == ServiceResultStatus.Error && result.ProblemDetails != null)
             {
-                TotalRecords = totalRecords,
-                PageNumber = pageNumber,
-                PageSize = pageSize,
-                TotalPages = (int)System.Math.Ceiling((double)totalRecords / pageSize),
-                Books = pagedBooks
-            };
-
-            return Ok(ServiceResult<object>.Success(response));
+                return StatusCode(result.ProblemDetails.Status, result.ProblemDetails);
+            }
+            return Ok(result);
         }
     }
 }
