@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Episode1
 {
+    //Interface Segregation Principle'e aykırı olan kod
     public interface IVehicle
     {
         void Drive();

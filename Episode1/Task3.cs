@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Episode1
 {
+    //Liskov Substitution Principle' aykırı olan kod
     public interface IBird
     {
         public void Eat();

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Episode1
 {
+    //Open Closed Principle'a aykırı durum :
     public class Shape
     {
         public string Type { get; set; } = default!;

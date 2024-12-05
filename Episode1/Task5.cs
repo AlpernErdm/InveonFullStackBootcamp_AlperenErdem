@@ -19,9 +19,9 @@ namespace Episode1
     {
         private EmailService _emailService;
 
-        public OrderProcessing()
+        public OrderProcessing(EmailService emailService)
         {
-            _emailService = new EmailService();
+            _emailService =emailService;
         }
 
         public void ProcessOrder()
