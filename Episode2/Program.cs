@@ -34,14 +34,13 @@
 
 AsyncAwaitExample example2 = new AsyncAwaitExample();
 
-// Örnek URL
 string url = "https://jsonplaceholder.typicode.com/posts";
 
 string data = await example2.FetchDataFromUrlAsync(url);
 
 if (data != null)
 {
-    Console.WriteLine($"Fetched Data: {data.Substring(0, 100)}..."); // Veri çıktısının sadece ilk 100 karakterini göster
+    Console.WriteLine($"Fetched Data: {data.Substring(0, 100)}..."); 
 }
 else
 {

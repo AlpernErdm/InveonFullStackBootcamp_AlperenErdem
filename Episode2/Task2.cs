@@ -27,22 +27,21 @@ namespace Episode2
                 for (int i = 0; i < 5; i++)
                 {
                     Console.WriteLine($"Running Task {i}");
-                    Task.Delay(1000).Wait(); // 1 saniye bekle
-                }
+                    Task.Delay(1000).Wait();
             });
             Console.WriteLine("Task.Run completed.");
         }
 
         public async Task DelayTask()
         {
-            await Task.Delay(3000); // 3 saniye bekle
+            await Task.Delay(3000);
             Console.WriteLine("3 seconds have passed.");
         }
 
         public async Task WhenAllTasks()
         {
-            Task task1 = Task.Run(() => Task.Delay(2000)); // 2 saniye bekle
-            Task task2 = Task.Run(() => Task.Delay(3000)); // 3 saniye bekle
+            Task task1 = Task.Run(() => Task.Delay(2000)); 
+            Task task2 = Task.Run(() => Task.Delay(3000)); 
 
             await Task.WhenAll(task1, task2);
             Console.WriteLine("All tasks completed.");
@@ -50,8 +49,8 @@ namespace Episode2
 
         public async Task WhenAnyTask()
         {
-            Task task1 = Task.Run(() => Task.Delay(2000)); // 2 saniye bekle
-            Task task2 = Task.Run(() => Task.Delay(3000)); // 3 saniye bekle
+            Task task1 = Task.Run(() => Task.Delay(2000)); 
+            Task task2 = Task.Run(() => Task.Delay(3000)); 
 
             await Task.WhenAny(task1, task2);
             Console.WriteLine("At least one task completed.");

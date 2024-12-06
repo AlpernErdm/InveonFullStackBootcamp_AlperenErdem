@@ -22,7 +22,6 @@ namespace Episode2
                 Console.WriteLine("Fetching data from URL...");
                 HttpResponseMessage response = await _httpClient.GetAsync(url);
 
-                // Hatalı HTTP durum kodlarını kontrol et
                 response.EnsureSuccessStatusCode();
 
                 string responseData = await response.Content.ReadAsStringAsync();

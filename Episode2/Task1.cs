@@ -11,7 +11,7 @@ namespace Episode2
         public void PerformLongOperation()
         {
             Console.WriteLine("Starting long operation...");
-            Thread.Sleep(5000); // 5 saniye bekle
+            Thread.Sleep(5000); 
             Console.WriteLine("Long operation completed.");
         }
     }
@@ -20,7 +20,7 @@ namespace Episode2
         public async Task PerformLongOperationAsync()
         {
             Console.WriteLine("Starting long operation...");
-            await Task.Delay(5000); // 5 saniye bekle
+            await Task.Delay(5000);
             Console.WriteLine("Long operation completed.");
         }
     }
