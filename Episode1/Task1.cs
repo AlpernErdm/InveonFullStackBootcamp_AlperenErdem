@@ -8,7 +8,7 @@ namespace Episode1
 {
     public class Task1
     {
-        //Single Responsibility Principle'a aykırı durum :
+        //Single Responsibility Principle'a aykırı durum : 
         public class Shopping()
         {
             public double Price { get; set; }
