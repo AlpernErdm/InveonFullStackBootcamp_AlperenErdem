@@ -26,12 +26,12 @@ namespace LibraryManagement.Business
             IEnumerable<Book> books;
             if (!string.IsNullOrEmpty(cachedBooks))
             {
-                books = JsonConvert.DeserializeObject<IEnumerable<Book>>(cachedBooks) ?? new List<Book>();
+                books = JsonConvert.DeserializeObject<IEnumerable<Book>>(cachedBooks)!;
             }
             else
             {
                 books = await _context.Books.ToListAsync();
-                if (books == null)
+                if (books == null || !books.Any())
                 {
                     return ServiceResult<IEnumerable<Book>>.Fail("Books not found");
                 }
@@ -42,7 +42,6 @@ namespace LibraryManagement.Business
 
             return ServiceResult<IEnumerable<Book>>.Success(books);
         }
-
         public async Task<ServiceResult<Book>> GetBookByIdAsync(int id)
         {
             var book = await _context.Books.FindAsync(id);

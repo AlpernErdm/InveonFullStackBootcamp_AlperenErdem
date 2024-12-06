@@ -29,6 +29,11 @@ namespace LibraryManagement.Controllers
         [HttpPost("/cache/set")]
         public async Task<IActionResult> Set([FromBody] RedisCacheRequestModel redisCacheRequestModel)
         {
+            if (redisCacheRequestModel == null || string.IsNullOrWhiteSpace(redisCacheRequestModel.Key) || string.IsNullOrWhiteSpace(redisCacheRequestModel.Value))
+            {
+                return BadRequest("Invalid cache request model.");
+            }
+
             var result = await _redisCacheService.SetValueAsync(redisCacheRequestModel.Key, redisCacheRequestModel.Value);
             if (result)
             {
