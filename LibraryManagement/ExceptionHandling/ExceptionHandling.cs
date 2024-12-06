@@ -26,7 +26,6 @@
     {
         public T? Data { get; set; }
 
-        //static factory method
         public static ServiceResult<T> Success(T data)
         {
             return new ServiceResult<T>

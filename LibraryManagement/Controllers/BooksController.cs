@@ -21,7 +21,6 @@ namespace LibraryManagement.Controllers
             _bookService = bookService;
         }
 
-        // GET: /getAll
         [HttpGet("/getAll")]
         public async Task<ActionResult<ServiceResult<IEnumerable<Book>>>> GetAllBooks()
         {
@@ -33,7 +32,6 @@ namespace LibraryManagement.Controllers
             return Ok(result);
         }
 
-        // GET: getById/{id}
         [HttpGet("/getById/{id}")]
         public async Task<ActionResult<ServiceResult<Book>>> GetBookById(int id)
         {
@@ -45,7 +43,6 @@ namespace LibraryManagement.Controllers
             return Ok(result);
         }
 
-        // POST: /create
         [HttpPost("/create")]
         public async Task<ActionResult<ServiceResult<Book>>> AddBook([FromBody] Book newBook)
         {
@@ -57,7 +54,6 @@ namespace LibraryManagement.Controllers
             return CreatedAtAction(nameof(GetBookById), new { id = newBook.Id }, result);
         }
 
-        // PUT: update/{id}
         [HttpPut("/update/{id}")]
         public async Task<IActionResult> UpdateBook(int id, [FromBody] Book updatedBook)
         {
@@ -69,7 +65,6 @@ namespace LibraryManagement.Controllers
             return NoContent();
         }
 
-        // DELETE: /delete/{id}]
         [HttpDelete("/delete/{id}")]
         public async Task<IActionResult> DeleteBook(int id)
         {
@@ -81,7 +76,6 @@ namespace LibraryManagement.Controllers
             return NoContent();
         }
 
-        // GET: /paged
         [HttpGet("paged")]
         public async Task<ActionResult<ServiceResult<object>>> GetPagedBooks([FromHeader] int pageNumber, [FromHeader] int pageSize)
         {
