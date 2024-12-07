@@ -6,8 +6,6 @@
         public string? Title { get; set; }
         public int Status { get; set; }
         public string? Detail { get; set; }
-        public string? Instance { get; set; }
-        public Dictionary<string, string[]> Extensions { get; set; } = new Dictionary<string, string[]>();
     }
 
     public class ServiceResult

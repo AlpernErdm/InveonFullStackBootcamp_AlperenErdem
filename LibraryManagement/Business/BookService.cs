@@ -18,29 +18,29 @@ namespace LibraryManagement.Business
             _redis = redis;
         }
 
-        public async Task<ServiceResult<IEnumerable<Book>>> GetAllBooksAsync()
+        public async Task<ServiceResult<List<Book>>> GetAllBooksAsync()
         {
             var cache = _redis.GetDatabase();
             var cachedBooks = await cache.StringGetAsync("books");
 
-            IEnumerable<Book> books;
+            List<Book> books;
             if (!string.IsNullOrEmpty(cachedBooks))
             {
-                books = JsonConvert.DeserializeObject<IEnumerable<Book>>(cachedBooks)!;
+                books = JsonConvert.DeserializeObject<List<Book>>(cachedBooks)!;
             }
             else
             {
                 books = await _context.Books.ToListAsync();
-                if (books == null || !books.Any())
+                if (books == null)
                 {
-                    return ServiceResult<IEnumerable<Book>>.Fail("Books not found");
+                    return ServiceResult<List<Book>>.Fail("Books not found");
                 }
 
                 var serializedBooks = JsonConvert.SerializeObject(books);
                 await cache.StringSetAsync("books", serializedBooks);
             }
 
-            return ServiceResult<IEnumerable<Book>>.Success(books);
+            return ServiceResult<List<Book>>.Success(books);
         }
         public async Task<ServiceResult<Book>> GetBookByIdAsync(int id)
         {
@@ -58,32 +58,27 @@ namespace LibraryManagement.Business
             await _context.SaveChangesAsync();
             return ServiceResult<Book>.Success(newBook);
         }
-
-        public async Task<ServiceResult<Book>> UpdateBookAsync(int id, Book updatedBook)
+        public async Task<ServiceResult<Book>> UpdateBookAsync(int id, UpdateBookDto updatedBookDto)
         {
-            if (id != updatedBook.Id)
+            var existingBook = await _context.Books.FindAsync(id);
+            if (existingBook == null)
             {
-                return ServiceResult<Book>.Fail("ID mismatch");
-            }
-            _context.Entry(updatedBook).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!_context.Books.Any(b => b.Id == id))
-                {
-                    return ServiceResult<Book>.Fail("Book not found");
-                }
-                else
-                {
-                    throw;
-                }
+                return ServiceResult<Book>.Fail("Book not found");
             }
 
-            return ServiceResult<Book>.Success(updatedBook);
+            existingBook.Title = updatedBookDto.Title;
+            existingBook.Author = updatedBookDto.Author;
+            existingBook.Year = updatedBookDto.Year;
+
+            _context.Books.Update(existingBook);
+            var result = await _context.SaveChangesAsync();
+
+            if (result == 0)
+            {
+                return ServiceResult<Book>.Fail("Failed to update the book");
+            }
+
+            return ServiceResult<Book>.Success(existingBook);
         }
 
         public async Task<ServiceResult<bool>> DeleteBookAsync(int id)

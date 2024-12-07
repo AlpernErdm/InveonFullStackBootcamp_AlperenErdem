@@ -55,9 +55,9 @@ namespace LibraryManagement.Controllers
         }
 
         [HttpPut("/update/{id}")]
-        public async Task<IActionResult> UpdateBook(int id, [FromBody] Book updatedBook)
+        public async Task<IActionResult> UpdateBook(int id, [FromBody] UpdateBookDto updateBookDto)
         {
-            var result = await _bookService.UpdateBookAsync(id, updatedBook);
+            var result = await _bookService.UpdateBookAsync(id, updateBookDto);
             if (result.Status == ServiceResultStatus.Error && result.ProblemDetails != null)
             {
                 return StatusCode(result.ProblemDetails.Status, result.ProblemDetails);
