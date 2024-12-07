@@ -9,7 +9,7 @@ namespace Episode1
     //Open Closed Principle'a aykırı durum :
     public class Shape
     {
-        public string Type { get; set; } = default!;
+        public string ?Type { get; set; }
         public double Widht { get; set; }
         public double Height { get; set; }
 
