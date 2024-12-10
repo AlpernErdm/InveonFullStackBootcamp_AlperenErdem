@@ -2,8 +2,8 @@
 using LibraryManagement.ExceptionHandling;
 using LibraryManagement.Models;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using StackExchange.Redis;
+using System.Text.Json;
 
 namespace LibraryManagement.Business
 {
@@ -23,20 +23,21 @@ namespace LibraryManagement.Business
             var cache = _redis.GetDatabase();
             var cachedBooks = await cache.StringGetAsync("books");
 
-            List<Book> books;
+            List<Book>? books = null;
             if (!string.IsNullOrEmpty(cachedBooks))
             {
-                books = JsonConvert.DeserializeObject<List<Book>>(cachedBooks)!;
+                books = JsonSerializer.Deserialize<List<Book>>(cachedBooks!);
             }
-            else
+
+            if (books == null || books.Count == 0)
             {
                 books = await _context.Books.ToListAsync();
-                if (books == null)
+                if (books == null || books.Count == 0)
                 {
                     return ServiceResult<List<Book>>.Fail("Books not found");
                 }
 
-                var serializedBooks = JsonConvert.SerializeObject(books);
+                var serializedBooks = JsonSerializer.Serialize(books);
                 await cache.StringSetAsync("books", serializedBooks);
             }
 
