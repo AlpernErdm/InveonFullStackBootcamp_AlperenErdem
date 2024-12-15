@@ -1,0 +1,24 @@
+﻿@model IEnumerable<WebAutomation.Models.AppRole>
+
+<h2>All Roles</h2>
+<a asp-action="Create" class="btn btn-primary">Create New Role</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Role Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var role in Model)
+        {
+            <tr>
+                <td>@role.Name</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@role.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@role.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,23 @@
+﻿@model AppUser
+
+<form asp-action="Register" method="post">
+    <div>
+        <label asp-for="UserName"></label>
+        <input asp-for="UserName" />
+    </div>
+    <div>
+        <label asp-for="Email"></label>
+        <input asp-for="Email" />
+    </div>
+    <div>
+        <label asp-for="FullName"></label>
+        <input asp-for="FullName" />
+    </div>
+    <div>
+        <label for="Password">Password</label>
+        <input type="password" name="password" />
+    </div>
+    <div>
+        <button type="submit">Register</button>
+    </div>
+</form>

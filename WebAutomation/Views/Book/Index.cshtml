@@ -1,0 +1,25 @@
+﻿@model IEnumerable<WebAutomation.Models.Book>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Publication Year</th>
+            <th>ISBN</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model)
+        {
+            <tr>
+                <td>
+                    <a href="@Url.Action("Details", new { id = book.Id })">@book.Title</a>
+                </td>
+                <td>@book.Author</td>
+                <td>@book.PublicationYear</td>
+                <td>@book.ISBN</td>
+            </tr>
+        }
+    </tbody>
+</table>
