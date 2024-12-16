@@ -26,9 +26,9 @@ Bu proje, kitapların yönetimini sağlayan basit bir kütüphane yönetim siste
 
 Öncelikle projeyi yerel makinenize klonlayın:
 
-git clone https://github.com/kullaniciAdi/library-management-system.git
+git clone https://github.com/AlpernErdm/InveonFullStackBootcamp_AlperenErdem/tree/Week2Work/WebAutomation
 cd library-management-system
-### 2. Gerekli Paketlerin Yüklenmesi
+2. Gerekli Paketlerin Yüklenmesi
 
 Projeyi klonladıktan sonra gerekli paketleri yüklemek için:
 
@@ -36,7 +36,7 @@ Projeyi klonladıktan sonra gerekli paketleri yüklemek için:
 bash
 Copy Code
 dotnet restore
-### 3. Veritabanı Ayarları
+3. Veritabanı Ayarları
 
 appsettings.json dosyasındaki veritabanı bağlantı ayarlarını kendi veritabanınıza göre güncelleyin:
 
@@ -46,7 +46,7 @@ Copy Code
 "ConnectionStrings": {
   "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=LibraryManagementSystemDb;Trusted_Connection=True;MultipleActiveResultSets=true"
 }
-### 4. Veritabanı Migrations ve Güncellemeleri
+4. Veritabanı Migrations ve Güncellemeleri
 
 Veritabanı tablolarını oluşturmak için:
 
@@ -55,7 +55,7 @@ bash
 Copy Code
 dotnet ef migrations add InitialCreate
 dotnet ef database update
-### 5. Uygulamayı Çalıştırma
+5. Uygulamayı Çalıştırma
 
 Projeyi çalıştırmak için:
 
@@ -63,15 +63,15 @@ Projeyi çalıştırmak için:
 bash
 Copy Code
 dotnet run
-### 6. Admin Kullanıcıyla Giriş Yapma
+6. Admin Kullanıcıyla Giriş Yapma
 
 Projeyi başlattıktan sonra varsayılan admin kullanıcıyı kullanarak giriş yapabilirsiniz:
 
 
 
-Kullanıcı Adı: alpernerdm@gmail.com
+Kullanıcı Adı: admin@admin.com
 
-Şifre: Alp132.eren
+Şifre: Admin123!
 
 
 Kullanım
@@ -84,7 +84,7 @@ Yeni kitap eklemek için aşağıdaki URL'yi kullanın:
 
 
 
-URL: https://localhost:7226/Book/Create
+URL: https://localhost:5001/Book/Create
 
 
 Kitap Güncelleme
@@ -93,7 +93,7 @@ Kitap güncellemek için ID'sini kullanarak aşağıdaki URL'yi kullanın:
 
 
 
-URL: https://localhost:7226/Book/Update/{id}
+URL: https://localhost:5001/Book/Update/{id}
 
 
 Kitap Silme
@@ -102,7 +102,7 @@ Kitap silmek için ID'sini kullanarak aşağıdaki URL'yi kullanın:
 
 
 
-URL: https://localhost:7226/Book/Delete/{id}
+URL: https://localhost:5001/Book/Delete/{id}
 
 
 Kitap Görüntüleme
@@ -111,7 +111,7 @@ Tüm kitapları listelemek için aşağıdaki URL'yi kullanın:
 
 
 
-URL: https://localhost:7226/Book
+URL: https://localhost:5001/Book
 
 
 Kullanıcı Yönetimi (Sadece Admin)
@@ -120,7 +120,7 @@ Kullanıcıları yönetmek için aşağıdaki URL'yi kullanın:
 
 
 
-URL: https://localhost:7226/User
+URL: https://localhost:5001/User
 
 
 Rol Yönetimi (Sadece Admin)
@@ -129,7 +129,7 @@ Rolleri yönetmek için aşağıdaki URL'yi kullanın:
 
 
 
-URL: https://localhost:7226/Role
+URL: https://localhost:5001/Role
 
 
 Projede Kullanılan Teknolojiler
