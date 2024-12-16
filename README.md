@@ -28,7 +28,7 @@ Bu proje, kitapların yönetimini sağlayan basit bir kütüphane yönetim siste
 
 git clone https://github.com/AlpernErdm/InveonFullStackBootcamp_AlperenErdem/tree/Week2Work/WebAutomation
 cd library-management-system
-###2. Gerekli Paketlerin Yüklenmesi
+### 2. Gerekli Paketlerin Yüklenmesi
 
 Projeyi klonladıktan sonra gerekli paketleri yüklemek için:
 
@@ -36,7 +36,7 @@ Projeyi klonladıktan sonra gerekli paketleri yüklemek için:
 bash
 Copy Code
 dotnet restore
-###3. Veritabanı Ayarları
+### 3. Veritabanı Ayarları
 
 appsettings.json dosyasındaki veritabanı bağlantı ayarlarını kendi veritabanınıza göre güncelleyin:
 
@@ -46,7 +46,7 @@ Copy Code
 "ConnectionStrings": {
   "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=LibraryManagementSystemDb;Trusted_Connection=True;MultipleActiveResultSets=true"
 }
-###4. Veritabanı Migrations ve Güncellemeleri
+### 4. Veritabanı Migrations ve Güncellemeleri
 
 Veritabanı tablolarını oluşturmak için:
 
@@ -55,7 +55,7 @@ bash
 Copy Code
 dotnet ef migrations add InitialCreate
 dotnet ef database update
-###5. Uygulamayı Çalıştırma
+### 5. Uygulamayı Çalıştırma
 
 Projeyi çalıştırmak için:
 
@@ -63,7 +63,7 @@ Projeyi çalıştırmak için:
 bash
 Copy Code
 dotnet run
-###6. Admin Kullanıcıyla Giriş Yapma
+### 6. Admin Kullanıcıyla Giriş Yapma
 
 Projeyi başlattıktan sonra varsayılan admin kullanıcıyı kullanarak giriş yapabilirsiniz:
 
