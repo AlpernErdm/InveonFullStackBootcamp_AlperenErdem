@@ -8,12 +8,11 @@ namespace WebAutomation.Repositories
         public IUserRepository Users { get; }
         public IBookRepository Books { get; }
 
-        public UnitOfWork(ApplicationDbContext context, IUserRepository userRepository,IBookRepository bookRepository)
+        public UnitOfWork(ApplicationDbContext context, IUserRepository userRepository, IBookRepository bookRepository)
         {
             _context = context;
             Users = userRepository;
             Books = bookRepository;
-            
         }
 
         public async Task<int> CompleteAsync()

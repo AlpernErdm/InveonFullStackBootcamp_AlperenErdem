@@ -7,15 +7,19 @@ using WebAutomation.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
+
+// Add database context
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
            options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
+
+// Add session settings
 builder.Services.AddSession(opt =>
 {
     opt.IdleTimeout = TimeSpan.FromMinutes(20);
     opt.Cookie.HttpOnly = true;
 });
 
-
+// Add Identity settings
 builder.Services.AddIdentity<AppUser, AppRole>(options =>
 {
     options.Password.RequireDigit = true;
@@ -27,17 +31,23 @@ builder.Services.AddIdentity<AppUser, AppRole>(options =>
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
+// Configure cookies
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Login";
     options.LogoutPath = "/Account/Logout";
 });
 
+// Register repositories to DI container
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
+// Seed default roles and admin user
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -57,9 +67,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
@@ -67,6 +77,7 @@ app.MapControllerRoute(
 
 app.Run();
 
+// Seed default roles and admin user method
 static async Task SeedRolesAndAdminAsync(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
 {
     if (!await roleManager.RoleExistsAsync("Admin"))
@@ -77,12 +88,15 @@ static async Task SeedRolesAndAdminAsync(UserManager<AppUser> userManager, RoleM
     {
         await roleManager.CreateAsync(new AppRole { Name = "User" });
     }
+
     string adminEmail = "alpernerdm@gmail.com";
     string adminPassword = "Alp132.eren";
+
     if (await userManager.FindByEmailAsync(adminEmail) == null)
     {
         var adminUser = new AppUser { UserName = adminEmail, Email = adminEmail, FullName = "Admin User" };
         var result = await userManager.CreateAsync(adminUser, adminPassword);
+
         if (result.Succeeded)
         {
             await userManager.AddToRoleAsync(adminUser, "Admin");

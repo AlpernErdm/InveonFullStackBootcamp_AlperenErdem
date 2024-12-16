@@ -1,5 +1,7 @@
 ﻿using WebAutomation.Context;
 using WebAutomation.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace WebAutomation.Repositories
 {
