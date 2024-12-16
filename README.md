@@ -69,9 +69,9 @@ Projeyi başlattıktan sonra varsayılan admin kullanıcıyı kullanarak giriş 
 
 
 
-Kullanıcı Adı: admin@admin.com
+Kullanıcı Adı: alpernerdm@gmail.com
 
-Şifre: Admin123!
+Şifre: Alp132.eren
 
 
 Kullanım
